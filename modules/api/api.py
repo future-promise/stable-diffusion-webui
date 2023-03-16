@@ -213,6 +213,15 @@ class Api:
                 # always on script with no arg should always run so you don't really need to add them to the requests
                 if "args" in request.alwayson_scripts[alwayson_script_name]:
                     script_args[alwayson_script.args_from:alwayson_script.args_to] = request.alwayson_scripts[alwayson_script_name]["args"]
+        
+        # Does nothing???
+        if request.controlnet and len(request.controlnet) > 0:
+            alwayson_script = self.get_script('controlnet', script_runner)
+            if alwayson_script == None:
+                raise HTTPException(status_code=422, detail=f"always on script {alwayson_script_name} not found")
+            # always on script with no arg should always run so you don't really need to add them to the requests
+            print("api, always on", alwayson_script.args_from, alwayson_script.args_to)
+    
         return script_args
 
     def text2imgapi(self, txt2imgreq: StableDiffusionTxt2ImgProcessingAPI):
